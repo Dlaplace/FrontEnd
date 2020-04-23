@@ -23,6 +23,8 @@ function ProjectEditModal({ project, stateVisible = "none", ...props }) {
   }
 
   function UpdateProject(e) {
+    e.preventDefault();
+    console.log("here this is the state for change of name",state)
     axios({
       method: "PUT",
       baseURL: "http://localhost:3000/",
@@ -35,6 +37,7 @@ function ProjectEditModal({ project, stateVisible = "none", ...props }) {
   }
 
   function DeleteProject() {
+    
     axios({
       method: "DELETE",
       baseURL: "http://localhost:3000/",

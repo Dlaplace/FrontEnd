@@ -12,6 +12,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 import MiniTicket from "../components/MiniTicket";
 import Card from "react-bootstrap/Card";
 
+
 function Home() {
   const [NTicketModal, setNTicketModal] = React.useState(false);
   const [NProjectModal, setNProjectModal] = React.useState(false);
@@ -25,12 +26,12 @@ function Home() {
     axios
       .get("http://localhost:3000/pool")
       .then(({ data }) => {
-        setTickets(data[0].new);
-        setPool(data);
+        setPool(data[0]);
       })
       .catch((err) => setError(err));
   }, []);
-
+  console.log(pool.High)
+  
   React.useEffect(() => {
     axios
       .get("http://localhost:3000/projects")
@@ -61,47 +62,49 @@ function Home() {
     const destinationColumn=destination.droppableId;
     console.log(sourceColumn)
 
-    const sourceTickets =
-    tickets &&
-    tickets.length > 0 &&
-    tickets.filter(({priority}) => priority === sourceColumn);
+    const sourceTickets =pool[sourceColumn];
+    console.log(sourceTickets)
+    
+    const destinationTickets =pool[destinationColumn];
+    const draggedTicket= pool[sourceColumn].find(({_id})=> _id===draggableId)
+    draggedTicket.priority=destination.droppableId
+    console.log('the dragged ticket',draggedTicket)
 
-    const destinationTickets =
-    tickets &&
-    tickets.length > 0 &&
-    tickets.filter(({priority}) => priority === destinationColumn);
-
-    const notrelatedTickets =
-    tickets &&
-    tickets.length > 0 &&
-    tickets.filter(({priority}) => priority !== sourceColumn && priority!==destinationColumn);
-
-    console.log("sourcetickets",sourceTickets)
-    console.log("destinationTickets",destinationTickets)
-    console.log("notrelatedTickets",notrelatedTickets)
     sourceTickets.splice(source.index, 1);
-    console.log('aftersplice',sourceTickets)
-    const draggedTicket= tickets.find(({_id})=> _id===draggableId)
-    draggedTicket.priority=destinationColumn;
+    console.log('afterfirstsplice',sourceTickets)
     destinationTickets.splice(destination.index,0,draggedTicket)
-    console.log("the dragged ticket",draggedTicket)
-    const newPoolOrder=sourceTickets.concat(destinationTickets).concat(notrelatedTickets)
-    console.log(newPoolOrder)
+    console.log('aftersecondsplice',destinationTickets)
 
     const newData={
-      
-      new:newPoolOrder}
-    console.log('this is the new data',newData)
+      [sourceColumn]:sourceTickets,
+      [destinationColumn]:destinationTickets
+    }
+
+    const draggedTicketUpdate = { priority:draggedTicket.priority}
+    console.log(draggedTicketUpdate)
+
+    console.log('the new data',newData)
+     axios({
+      method: "PUT",
+      baseURL: `http://localhost:3000/projects/${draggedTicket.project}`,
+      url: `/ticket/${draggedTicket._id}`,
+      data: draggedTicketUpdate,
+    })
+      .then(({ data }) =>
+        console.log("Project:" + data.name + "updated")
+      )
+      .catch((err) => console.log(err));
+
     axios({
       method: "PUT",
       baseURL: "http://localhost:3000/",
-      url: `/pool/5ea112dd40683e4b6082abb4`,
+      url: `/pool/5ea1e479ec77c181e49afb6e`,
       data: newData,
     })
       .then(({ data }) =>
-        alert("Project:" + data.name + "updated")
+        console.log("Project:" + data.name + "updated")
       )
-      .catch((err) => alert(err));
+      .catch((err) => console.log(err));
 
   };
 
@@ -133,7 +136,6 @@ function Home() {
         <Col xs="auto">
           <ProjectAcordion
             projects={projects}
-            onClick={(e) => console.log(e.target.value)}
           />
         </Col>
 
@@ -149,10 +151,9 @@ function Home() {
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                       >
-                        {tickets &&
-                          tickets.length > 0 &&
-                          tickets
-                            .filter((ticket) => ticket.priority === "High")
+                        {pool.High &&
+                          pool.High.length > 0 &&
+                          pool.High
                             .map((ticket, index) => {
                               return (
                                 <MiniTicket ticket={ticket} index={index} />
@@ -172,10 +173,9 @@ function Home() {
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                       >
-                        {tickets &&
-                          tickets.length > 0 &&
-                          tickets
-                            .filter((ticket) => ticket.priority === "Normal")
+                        {pool.Normal &&
+                          pool.Normal.length > 0 &&
+                          pool.Normal
                             .map((ticket, index) => {
                               return (
                                 <MiniTicket ticket={ticket} index={index} />
@@ -194,10 +194,9 @@ function Home() {
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                       >
-                        {tickets &&
-                          tickets.length > 0 &&
-                          tickets
-                            .filter((ticket) => ticket.priority === "Low")
+                        {pool.Low &&
+                          pool.Low.length > 0 &&
+                          pool.Low
                             .map((ticket, index) => {
                               return (
                                 <MiniTicket ticket={ticket} index={index} />
