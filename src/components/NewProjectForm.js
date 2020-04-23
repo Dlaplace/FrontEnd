@@ -33,7 +33,7 @@ function NewTicket({ projects }) {
         <Form.Group controlId="Form.ControlTicketName">
           <Form.Label>Ticket Name</Form.Label>
           <Form.Control
-            as="textarea"
+            as="input"
             name="name"
             onChange={handleChange}
             rows="1"

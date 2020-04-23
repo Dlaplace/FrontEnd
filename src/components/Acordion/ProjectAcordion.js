@@ -1,10 +1,10 @@
 import React from "react";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
-import AccordionCard from "../components/AccordionCard";
+import AccordionCard from "./AccordionCard/AccordionCard";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import ProjectEditModal from "./ProjectEditModal"
+import ProjectEditModal from "../ProjectEditModal"
 
 
 
