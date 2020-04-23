@@ -24,7 +24,7 @@ function Home() {
   React.useEffect(() => {
     axios
       .get("http://localhost:3000/pool")
-      .then(({data}) => {
+      .then(({ data }) => {
         setTickets(data[0].new);
         setPool(data);
       })
@@ -57,12 +57,52 @@ function Home() {
       return;
     }
 
-    //   newTicketsIds.splice(source.index,1);
-    //   newTicketsIds.splice(destination.index,0,draggableId)
-    //   const newColumn ={
-    //     ...column,
-    //     _id:newTicketsIds
-    //   }
+    const sourceColumn=source.droppableId;
+    const destinationColumn=destination.droppableId;
+    console.log(sourceColumn)
+
+    const sourceTickets =
+    tickets &&
+    tickets.length > 0 &&
+    tickets.filter(({priority}) => priority === sourceColumn);
+
+    const destinationTickets =
+    tickets &&
+    tickets.length > 0 &&
+    tickets.filter(({priority}) => priority === destinationColumn);
+
+    const notrelatedTickets =
+    tickets &&
+    tickets.length > 0 &&
+    tickets.filter(({priority}) => priority !== sourceColumn && priority!==destinationColumn);
+
+    console.log("sourcetickets",sourceTickets)
+    console.log("destinationTickets",destinationTickets)
+    console.log("notrelatedTickets",notrelatedTickets)
+    sourceTickets.splice(source.index, 1);
+    console.log('aftersplice',sourceTickets)
+    const draggedTicket= tickets.find(({_id})=> _id===draggableId)
+    draggedTicket.priority=destinationColumn;
+    destinationTickets.splice(destination.index,0,draggedTicket)
+    console.log("the dragged ticket",draggedTicket)
+    const newPoolOrder=sourceTickets.concat(destinationTickets).concat(notrelatedTickets)
+    console.log(newPoolOrder)
+
+    const newData={
+      
+      new:newPoolOrder}
+    console.log('this is the new data',newData)
+    axios({
+      method: "PUT",
+      baseURL: "http://localhost:3000/",
+      url: `/pool/5ea112dd40683e4b6082abb4`,
+      data: newData,
+    })
+      .then(({ data }) =>
+        alert("Project:" + data.name + "updated")
+      )
+      .catch((err) => alert(err));
+
   };
 
   return (
@@ -112,11 +152,7 @@ function Home() {
                         {tickets &&
                           tickets.length > 0 &&
                           tickets
-                            .filter(
-                              (ticket) =>
-                                ticket.priority === "High" &&
-                                ticket.status === "New"
-                            )
+                            .filter((ticket) => ticket.priority === "High")
                             .map((ticket, index) => {
                               return (
                                 <MiniTicket ticket={ticket} index={index} />

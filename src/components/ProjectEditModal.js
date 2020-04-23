@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import Container from "react-bootstrap/Container";
 
-function ProjectEditModal({ project,stateVisible="none" , ...props}) {
+function ProjectEditModal({ project, stateVisible = "none", ...props }) {
   const [visible, setVisible] = React.useState({ display: stateVisible });
   const [state, setState] = React.useState({
     name: "",
@@ -29,25 +29,22 @@ function ProjectEditModal({ project,stateVisible="none" , ...props}) {
       url: `/projects/${project.id}`,
       data: state,
     })
-      .then(({ data }) =>
-        alert("Project:" + data.name + "updated")
-      )
+      .then(({ data }) => alert("Project:" + data.name + "updated"))
       .catch((err) => alert(err));
     setState({ name: "" });
   }
 
   function DeleteProject() {
     axios({
-    method: "DELETE",
-    baseURL: "http://localhost:3000/",
-    url: `/projects/${project.id}`,
-    data: state,
-  })
-    .then(({ data }) =>
-      console.log("deleted!")
-    )
-    .catch((err) => alert(err));
-  setState({ name: "" });}
+      method: "DELETE",
+      baseURL: "http://localhost:3000/",
+      url: `/projects/${project.id}`,
+      data: state,
+    })
+      .then(({ data }) => console.log("deleted!"))
+      .catch((err) => alert(err));
+    setState({ name: "" });
+  }
 
   return (
     <Modal
