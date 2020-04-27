@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card";
 import AccordionCard from "./AccordionCard/AccordionCard";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import ProjectEditModal from "../ProjectEditModal"
+import ProjectEditModal from "./ProjectEditOption/ProjectEditModal"
 
 
 

@@ -9,7 +9,6 @@ function NewTicket({ projects }) {
     priority: "",
     description: "",
     project: "",
-    comment: "",
   });
 
   function handleChange(e) {
@@ -19,17 +18,19 @@ function NewTicket({ projects }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(state)
-    const {project} =state
+    console.log(state);
+    const { project } = state;
 
-      axios({
-        method: 'POST',
-        baseURL: "http://localhost:3000/projects",
-        url:`${project}/ticket`,
-        data:state,
-      })
-        .then(({data}) => alert("ticket " + data.name + " has been successfully created" ))
-        .catch((err) => alert(err));
+    axios({
+      method: "POST",
+      baseURL: "http://localhost:3000/projects",
+      url: `${project}/ticket`,
+      data: state,
+    })
+      .then(({ data }) =>
+        alert("ticket " + data.name + " has been successfully created")
+      )
+      .catch((err) => alert(err));
   }
 
   return (
@@ -76,21 +77,11 @@ function NewTicket({ projects }) {
         <Form.Group controlId="Form.ControlTicketDescription">
           <Form.Label>Ticket Description</Form.Label>
           <Form.Control
-            as="textarea"
+            as="input"
             name="description"
             onChange={handleChange}
             rows="3"
             placeholder="Description"
-          />
-        </Form.Group>
-        <Form.Group controlId="Form.ControlTicketComments">
-          <Form.Label>Comments</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows="1"
-            placeholder="Optional comment"
-            name="comment"
-            onChange={handleChange}
           />
         </Form.Group>
         <Button variant="primary" type="submit">
