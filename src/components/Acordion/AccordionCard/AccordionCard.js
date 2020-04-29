@@ -31,9 +31,7 @@ function AccordionCard({ projectid }) {
         <ListGroup variant="flush">
           {tickets &&
             tickets.length > 0 &&
-            tickets
-              .filter(({ project }) => project._id === projectid)
-              .map((ticket, index) => {
+            tickets.filter(({ project }) => project._id === projectid).map((ticket, index) => {
                 return (
                   <ModalTicket
                     ticket={ticket}
