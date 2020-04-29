@@ -26,20 +26,19 @@ function ProjectEditModal({ project, stateVisible = "none", ...props }) {
     e.preventDefault();
     axios({
       method: "PUT",
-      baseURL: "http://localhost:3000/",
+      baseURL: `${process.env.REACT_APP_CONNECTION_SERVER}`,
       url: `/projects/${project.id}`,
       data: state,
     })
-      .then(({ data }) => alert("Project:" + data.name + "updated"))
-      .catch((err) => alert(err));
+      .then(({ data }) => console.log("Project:" + data.name + "updated"))
+      .catch((err) => console.log(err));
     setState({ name: "" });
   }
 
   function DeleteProject() {
-
     axios({
       method: "DELETE",
-      baseURL: "http://localhost:3000/",
+      baseURL: `${process.env.REACT_APP_CONNECTION_SERVER}`,
       url: `/projects/${project.id}`,
       data: state,
     })

@@ -22,14 +22,17 @@ function NewTicket({ projects }) {
 
     axios({
       method: "POST",
-      baseURL: "http://localhost:3000/projects",
+      baseURL: `${process.env.REACT_APP_CONNECTION_SERVER}projects`,
       url: `${project}/ticket`,
       data: state,
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
       .then(({ data }) =>
-        alert("ticket " + data.name + " has been successfully created")
+        console.log("ticket " + data.name + " has been successfully created")
       )
-      .catch((err) => alert(err));
+      .catch((err) => console.log(err));
   }
 
   return (

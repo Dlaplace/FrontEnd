@@ -21,24 +21,24 @@ function Home() {
   const [error, setError] = React.useState(null);
   const [tickets, setTickets] = React.useState([]);
   const [pool, setPool] = React.useState([]);
-  const checkUpdate=React.useRef(true)
+  const checkUpdate = React.useRef(true);
 
   React.useEffect(() => {
-    if(checkUpdate){
-    axios
-      .get("http://localhost:3000/pool")
-      .then(({ data }) => {
-        setPool(data[0]);
-      })
-      .catch((err) => setError(err));
-      
-  } else {checkUpdate.current=false}
-}
-  , []);
+    if (checkUpdate) {
+      axios
+        .get(`${process.env.REACT_APP_CONNECTION_SERVER}pool`)
+        .then(({ data }) => {
+          setPool(data[0]);
+        })
+        .catch((err) => setError(err));
+    } else {
+      checkUpdate.current = false;
+    }
+  }, []);
 
   React.useEffect(() => {
     axios
-      .get("http://localhost:3000/projects")
+      .get(`${process.env.REACT_APP_CONNECTION_SERVER}projects`)
       .then(({ data }) => {
         setProjects(data);
       })
@@ -81,7 +81,7 @@ function Home() {
 
     axios({
       method: "PUT",
-      baseURL: `http://localhost:3000/projects/${draggedTicket.project}`,
+      baseURL: `${process.env.REACT_APP_CONNECTION_SERVER}projects/${draggedTicket.project}`,
       url: `/ticket/${draggedTicket._id}`,
       data: draggedTicketUpdate,
     })
@@ -90,8 +90,8 @@ function Home() {
 
     axios({
       method: "PUT",
-      baseURL: "http://localhost:3000/",
-      url: `/pool/5ea1e479ec77c181e49afb6e`,
+      baseURL: `${process.env.REACT_APP_CONNECTION_SERVER}`,
+      url: `/pool/5ea8a5134812d940340b3f55`,
       data: newData,
     })
       .then(({ data }) => console.log("Project:" + data.name + "updated"))

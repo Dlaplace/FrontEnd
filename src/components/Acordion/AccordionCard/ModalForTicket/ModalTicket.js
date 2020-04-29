@@ -14,7 +14,7 @@ function ModalTicket({ ticket, projectid }) {
 
   async function handleDelete() {
     const data = await axios.delete(
-      `http://localhost:3000/projects/${projectid}/ticket/${_id}`
+      `${process.env.REACT_APP_CONNECTION_SERVER}/projects/${projectid}/ticket/${_id}`
     );
     console.log(data);
     handleClose();

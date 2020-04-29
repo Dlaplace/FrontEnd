@@ -29,7 +29,7 @@ function Ticket({ ticket, index, projectid }) {
     console.log(newData);
     axios({
       method: "PUT",
-      baseURL: `http://localhost:3000/projects/${projectid}`,
+      baseURL: `${process.env.REACT_APP_CONNECTION_SERVER}projects/${projectid}`,
       url: `/ticket/${_id}`,
       data: newData,
     })
@@ -42,17 +42,17 @@ function Ticket({ ticket, index, projectid }) {
   }
 
   function HandleSelect(eventKey) {
-    setStatus(eventKey);
     const newData = { status: eventKey };
 
     axios({
       method: "PUT",
-      baseURL: `http://localhost:3000/projects/${projectid}`,
+      baseURL: `${process.env.REACT_APP_CONNECTION_SERVER}projects/${projectid}`,
       url: `/ticket/${_id}`,
       data: newData,
     })
       .then(({ data }) => console.log(data))
       .catch((err) => console.log(err));
+    setStatus(eventKey);
   }
 
   return (

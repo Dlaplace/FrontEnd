@@ -7,16 +7,20 @@ function MiniTicket({ ticket, index }) {
   return (
     <Draggable draggableId={_id} index={index}>
       {(provided) => (
-          <Card bg="light" key="light" style={{ maxWidth: "20rem" }}
+        <Card
+          bg="light"
+          key="light"
+          style={{ maxWidth: "20rem" }}
           ref={provided.innerRef}
           {...provided.draggableProps}
-          {...provided.dragHandleProps}>
-            <Card.Header>ID:{_id}</Card.Header>
-            <Card.Body>
-              <Card.Title>{name} </Card.Title>
-              <Card.Text>{description}</Card.Text>
-            </Card.Body>
-          </Card>
+          {...provided.dragHandleProps}
+        >
+          <Card.Header>ID:{_id}</Card.Header>
+          <Card.Body>
+            <Card.Title>{name} </Card.Title>
+            <Card.Text>{description}</Card.Text>
+          </Card.Body>
+        </Card>
       )}
     </Draggable>
   );

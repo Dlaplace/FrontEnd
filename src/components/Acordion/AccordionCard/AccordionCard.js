@@ -14,7 +14,7 @@ function AccordionCard({ projectid }) {
   React.useEffect(() => {
     if (updatetest.current) {
       axios
-        .get("http://localhost:3000/tickets")
+        .get(`${process.env.REACT_APP_CONNECTION_SERVER}tickets`)
         .then(({ data }) => {
           setTickets(data);
         })

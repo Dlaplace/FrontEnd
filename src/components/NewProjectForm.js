@@ -17,14 +17,14 @@ function NewTicket({ projects }) {
     e.preventDefault();
     axios({
       method: "POST",
-      baseURL: "http://localhost:3000/",
-      url: `/projects`,
+      baseURL: `${process.env.REACT_APP_CONNECTION_SERVER}`,
+      url: `projects`,
       data: state,
     })
       .then(({ data }) =>
-        alert("Project:" + data.name + "was sucesfully created!")
+        console.log("Project:" + data.name + "was sucesfully created!")
       )
-      .catch((err) => alert(err));
+      .catch((err) => console.log(err));
     setState({ name: "" });
   }
 
