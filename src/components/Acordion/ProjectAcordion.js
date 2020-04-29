@@ -5,19 +5,28 @@ import AccordionCard from "./AccordionCard/AccordionCard";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import ProjectEditModal from "./ProjectEditOption/ProjectEditModal"
+import axios from "axios";
 
 
 
 // This section creates the list of projects on the accordion
-function ProjectAcordion({ projects }) {
+function ProjectAcordion() {
   const [ProjectEdit, setProjectEdit] = React.useState(false);
-  const [Project,setProject]=React.useState({name:"",id:""})
+  const [Project,setProject]=React.useState({name:"",id:"",tickets:[]})
+  const [projects,setProjects]=React.useState([]);
+  const checkUpdate=React.useRef(true)
 
+  const getProject= async()=>{
+    const {data}= await axios.get("http://localhost:3000/projects")
+    setProjects(data)
+  };
 
+  React.useEffect(() => {getProject(projects)}, []);
+  console.log(projects.length)
 
   return (
     <div>
-      {projects.map(({ name, _id }) => (
+      {projects.map(({ name, _id}) => (
         <Accordion style={{ width: "20rem" }} key={_id}>
           <Card key={_id}>
             <Accordion.Toggle as={Card.Header} eventKey="0">

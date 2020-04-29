@@ -21,15 +21,20 @@ function Home() {
   const [error, setError] = React.useState(null);
   const [tickets, setTickets] = React.useState([]);
   const [pool, setPool] = React.useState([]);
+  const checkUpdate=React.useRef(true)
 
   React.useEffect(() => {
+    if(checkUpdate){
     axios
       .get("http://localhost:3000/pool")
       .then(({ data }) => {
         setPool(data[0]);
       })
       .catch((err) => setError(err));
-  }, []);
+      
+  } else {checkUpdate.current=false}
+}
+  , []);
 
   React.useEffect(() => {
     axios
@@ -42,9 +47,6 @@ function Home() {
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
-    console.log("destination", destination);
-    console.log("Source", source);
-    console.log("draggable id", draggableId);
 
     if (!destination) {
       return;
@@ -59,22 +61,16 @@ function Home() {
 
     const sourceColumn = source.droppableId;
     const destinationColumn = destination.droppableId;
-    console.log(sourceColumn);
-
     const sourceTickets = pool[sourceColumn];
-    console.log(sourceTickets);
 
     const destinationTickets = pool[destinationColumn];
     const draggedTicket = pool[sourceColumn].find(
       ({ _id }) => _id === draggableId
     );
     draggedTicket.priority = destination.droppableId;
-    console.log("the dragged ticket", draggedTicket);
 
     sourceTickets.splice(source.index, 1);
-    console.log("afterfirstsplice", sourceTickets);
     destinationTickets.splice(destination.index, 0, draggedTicket);
-    console.log("aftersecondsplice", destinationTickets);
 
     const newData = {
       [sourceColumn]: sourceTickets,
@@ -82,9 +78,7 @@ function Home() {
     };
 
     const draggedTicketUpdate = { priority: draggedTicket.priority };
-    console.log(draggedTicketUpdate);
 
-    console.log("the new data", newData);
     axios({
       method: "PUT",
       baseURL: `http://localhost:3000/projects/${draggedTicket.project}`,

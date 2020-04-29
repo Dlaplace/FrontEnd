@@ -18,7 +18,6 @@ function NewTicket({ projects }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(state);
     const { project } = state;
 
     axios({

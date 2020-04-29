@@ -3,6 +3,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Modal from "react-bootstrap/Modal";
 import Ticket from "./Ticket/Ticket";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
 // this section contains the handler for the modal event not the ticket information itself
 
 function ModalTicket({ ticket, projectid }) {
@@ -10,6 +11,14 @@ function ModalTicket({ ticket, projectid }) {
   const [show, setShow] = React.useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  async function handleDelete() {
+    const data = await axios.delete(
+      `http://localhost:3000/projects/${projectid}/ticket/${_id}`
+    );
+    console.log(data);
+    handleClose();
+  }
 
   return (
     <>
@@ -32,7 +41,7 @@ function ModalTicket({ ticket, projectid }) {
         <Modal.Footer
           style={{ display: "flex", justifyContent: "space-between" }}
         >
-          <Button size="sm" variant="danger" onClick={handleClose}>
+          <Button size="sm" variant="danger" onClick={handleDelete}>
             Delete Ticket
           </Button>
           <Button size="sm" onClick={handleClose}>

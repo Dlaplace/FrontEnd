@@ -13,7 +13,8 @@ function NewTicket({ projects }) {
     setState({ ...state, [name]: value });
   }
 
-  function handleSubmit() {
+  function handleSubmit(e) {
+    e.preventDefault();
     axios({
       method: "POST",
       baseURL: "http://localhost:3000/",
